@@ -1,12 +1,20 @@
-import { metadataReducer } from '@/reducers/metadataReducer';
-import { defaultMetadata } from '../lib/data';
+import { metadataReducer } from '@/reducers/metadata-reducer';
+import { defaultMetadata } from '@/lib/data';
 import type { MetadataContextType } from '@/types';
-import { createContext, useEffect, useReducer, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useReducer, type ReactNode } from 'react';
 
-export const MetadataContext = createContext<MetadataContextType>({
+const MetadataContext = createContext<MetadataContextType>({
   metadata: defaultMetadata,
   dispatchMetadata: () => {},
 });
+
+export function useMetadata() {
+  const context = useContext(MetadataContext);
+  if (!context) {
+    throw new Error('useMetadata must be used within a MetadataProvider');
+  }
+  return context;
+}
 
 const MetadataProvider = ({ children }: { children: ReactNode }) => {
   const [metadata, dispatchMetadata] = useReducer(metadataReducer, undefined);

@@ -12,21 +12,15 @@ const TechTagProvider = ({ children }: { children: ReactNode }) => {
   const [tags, setTags] = useState<string[]>();
   const [technologies, setTechnologies] = useState<string[]>();
 
-  // Load saved data
+  // Load saved data once on mount. The synchronous setState here is intentional:
+  // it hydrates from localStorage before first paint (guarded by the loading gate below).
   useEffect(() => {
     const savedTags = localStorage.getItem('tags');
-    if (savedTags) {
-      setTags(JSON.parse(savedTags));
-    } else {
-      setTags([]);
-    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTags(savedTags ? JSON.parse(savedTags) : []);
 
     const savedTechnologies = localStorage.getItem('technologies');
-    if (savedTechnologies) {
-      setTechnologies(JSON.parse(savedTechnologies));
-    } else {
-      setTechnologies([]);
-    }
+    setTechnologies(savedTechnologies ? JSON.parse(savedTechnologies) : []);
   }, []);
 
   // Save on change

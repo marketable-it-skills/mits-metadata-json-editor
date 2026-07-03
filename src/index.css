@@ -5,6 +5,16 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Larger global type scale (defaults: xs 12px, sm 14px, base 16px) */
+@theme {
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.125rem;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.375rem;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.625rem;
+}
+
 @theme inline {
   --font-heading: var(--font-sans);
   --font-sans: 'Geist Variable', sans-serif;

@@ -20,8 +20,9 @@ export default defineConfig([
     },
   },
   {
-    // shadcn-generated components export cva variants alongside components
-    files: ['src/components/ui/**/*.tsx'],
+    // shadcn-generated components export cva variants alongside components;
+    // providers co-locate their React context with the provider component.
+    files: ['src/components/ui/**/*.tsx', 'src/components/providers/**/*.tsx'],
     rules: {
       'react-refresh/only-export-components': 'off',
     },

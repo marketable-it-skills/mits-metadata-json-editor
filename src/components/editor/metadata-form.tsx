@@ -97,6 +97,8 @@ export default function MetadataForm() {
   const [importError, setImportError] = useState<string | null>(null);
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied'>('idle');
 
+  const [forceRefresh, setForceRefresh] = useState(0);
+
   const {
     control,
     getValues,
@@ -121,6 +123,7 @@ export default function MetadataForm() {
     }
     setImportError(null);
     dispatchMetadata({ type: 'import', payload: data });
+    setForceRefresh((prev) => prev + 1);
   }
 
   function handleFileSelected(event: React.ChangeEvent<HTMLInputElement>) {
@@ -167,7 +170,10 @@ export default function MetadataForm() {
   }
 
   return (
-    <Card className='mx-auto w-full max-w-3xl'>
+    <Card
+      className='mx-auto w-full max-w-3xl'
+      key={forceRefresh}
+    >
       <CardContent className='grid gap-6'>
         <Tabs
           value={metadata.mode}
@@ -647,7 +653,10 @@ export default function MetadataForm() {
           type='button'
           size='lg'
           variant='destructive'
-          onClick={() => dispatchMetadata({ type: 'reset' })}
+          onClick={() => {
+            dispatchMetadata({ type: 'reset' });
+            setForceRefresh((prev) => prev + 1);
+          }}
         >
           <RotateCcwIcon data-icon='inline-start' />
           Reset to default template

@@ -414,7 +414,7 @@ export default function MetadataForm() {
                   <Input
                     id='est-time'
                     type='number'
-                    min={0.5}
+                    min={1}
                     {...register('estTime', {
                       valueAsNumber: true,
                       onChange: (event) =>

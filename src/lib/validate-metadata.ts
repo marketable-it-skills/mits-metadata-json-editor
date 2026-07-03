@@ -15,7 +15,7 @@ export const metadataSchema = z
     skillDomainIds: z.array(z.number()),
     languages: z.array(z.string()),
     competition: z.string(),
-    estTime: z.number(),
+    estTime: z.number().min(1),
     authors: z.array(authorSchema),
     technologies: z.array(z.string()),
     tags: z.array(z.string()),
@@ -41,6 +41,15 @@ export const metadataSchema = z
         });
       }
 
+      if (!/^[A-Z0-9]+$/.test(metadata.competitionShortName)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['competitionShortName'],
+          message:
+            'Competition short name must only contain uppercase letters and numbers, with no spaces or special characters.',
+        });
+      }
+
       if (!metadata.moduleName.trim()) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -49,11 +58,11 @@ export const metadataSchema = z
         });
       }
 
-      if (!Number.isFinite(metadata.estTime) || metadata.estTime < 0.5) {
+      if (!Number.isFinite(metadata.estTime) || metadata.estTime < 1) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ['estTime'],
-          message: 'Estimated time must be at least 0.5 hours.',
+          message: 'Estimated time must be at least 1 hour.',
         });
       }
     } else if (!metadata.name.trim()) {

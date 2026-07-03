@@ -1,6 +1,6 @@
-import type { Dispatch, SetStateAction } from 'react';
+import type { ActionDispatch, Dispatch, SetStateAction } from 'react';
 
-export interface Metadata {
+export interface CollectionMetadata {
   name: string;
   displayName: string;
   description: string;
@@ -14,6 +14,11 @@ export interface Metadata {
   tags: string[];
 }
 
+export interface Metadata extends CollectionMetadata {
+  competitionShortName: string;
+  moduleName: string;
+}
+
 export interface Author {
   name: string;
   url: string;
@@ -23,10 +28,11 @@ export interface Author {
 
 export interface MetadataContextType {
   metadata: Metadata;
+  dispatchMetadata: ActionDispatch<[action: Action]>;
 }
 
 export interface CollectionContextType {
-  collection: Metadata[];
+  collection: CollectionMetadata[];
 }
 
 export interface TechTagContextType {
@@ -34,4 +40,11 @@ export interface TechTagContextType {
   technologies: string[];
   setTags: Dispatch<SetStateAction<string[] | undefined>>;
   setTechnologies: Dispatch<SetStateAction<string[] | undefined>>;
+}
+
+// Generic
+
+export interface Action {
+  type: string;
+  payload?: any;
 }

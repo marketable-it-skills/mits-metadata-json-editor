@@ -1,21 +1,23 @@
+import { metadataReducer } from '@/reducers/metadataReducer';
 import { defaultMetadata } from '../lib/data';
-import type { Metadata, MetadataContextType } from '@/types';
-import { createContext, useEffect, useState, type ReactNode } from 'react';
+import type { MetadataContextType } from '@/types';
+import { createContext, useEffect, useReducer, type ReactNode } from 'react';
 
 export const MetadataContext = createContext<MetadataContextType>({
   metadata: defaultMetadata,
+  dispatchMetadata: () => {},
 });
 
 const MetadataProvider = ({ children }: { children: ReactNode }) => {
-  const [metadata, setMetadata] = useState<Metadata>();
+  const [metadata, dispatchMetadata] = useReducer(metadataReducer, undefined);
 
   // Load saved metadata
   useEffect(() => {
     const savedMetadata = localStorage.getItem('metadata');
     if (savedMetadata) {
-      setMetadata(JSON.parse(savedMetadata));
+      dispatchMetadata({ type: 'load', payload: JSON.parse(savedMetadata) });
     } else {
-      setMetadata(defaultMetadata);
+      dispatchMetadata({ type: 'load', payload: defaultMetadata });
     }
   }, []);
 
@@ -30,7 +32,11 @@ const MetadataProvider = ({ children }: { children: ReactNode }) => {
     return 'Loading...';
   }
 
-  return <MetadataContext.Provider value={{ metadata }}>{children}</MetadataContext.Provider>;
+  return (
+    <MetadataContext.Provider value={{ metadata, dispatchMetadata }}>
+      {children}
+    </MetadataContext.Provider>
+  );
 };
 
 export default MetadataProvider;

@@ -1,10 +1,10 @@
-import type { CollectionContextType, Metadata } from '@/types';
+import type { CollectionContextType, CollectionMetadata } from '@/types';
 import { createContext, useEffect, useState, type ReactNode } from 'react';
 
 export const CollectionContext = createContext<CollectionContextType>({ collection: [] });
 
 const CollectionProvider = ({ children }: { children: ReactNode }) => {
-  const [collection, setCollection] = useState<Metadata[]>();
+  const [collection, setCollection] = useState<CollectionMetadata[]>();
 
   // Load collection.json
   useEffect(() => {

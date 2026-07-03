@@ -14,9 +14,14 @@ export interface CollectionMetadata {
   tags: string[];
 }
 
+export type MetadataMode = 'project-task' | 'tutorial';
+
 export interface Metadata extends CollectionMetadata {
   competitionShortName: string;
   moduleName: string;
+  mode: MetadataMode;
+  /** Tutorial-only: ordered module names keyed by their 1-based position as a string. */
+  moduleNames?: Record<string, string>;
 }
 
 export interface Author {
@@ -46,5 +51,7 @@ export interface TechTagContextType {
 
 export interface Action {
   type: string;
+  // Payloads are heterogeneous per action type and narrowed inside the reducer.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload?: any;
 }

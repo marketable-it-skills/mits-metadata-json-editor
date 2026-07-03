@@ -1,4 +1,6 @@
-export const defaultMetadata = {
+import type { Metadata } from '@/types';
+
+export const defaultMetadata: Metadata = {
   name: '',
   displayName: '',
   description: '',
@@ -18,7 +20,36 @@ export const defaultMetadata = {
 
   competitionShortName: '',
   moduleName: '',
+  mode: 'project-task',
 };
+
+export const defaultTutorialMetadata: Metadata = {
+  name: '',
+  displayName: '',
+  description: '',
+  url: '',
+  skillDomainIds: [1],
+  languages: ['EN'],
+  competition: '',
+  estTime: 3,
+  authors: [
+    {
+      name: '',
+      url: '',
+    },
+  ],
+  technologies: [],
+  tags: [],
+
+  competitionShortName: '',
+  moduleName: '',
+  mode: 'tutorial',
+  moduleNames: {},
+};
+
+export function getDefaultMetadata(mode: Metadata['mode']): Metadata {
+  return mode === 'tutorial' ? defaultTutorialMetadata : defaultMetadata;
+}
 
 export const skillDomains = [
   {

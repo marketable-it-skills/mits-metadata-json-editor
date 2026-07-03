@@ -1,0 +1,18 @@
+export const defaultMetadata = {
+  name: '',
+  displayName: '',
+  description: '',
+  url: '',
+  skillDomainIds: [1],
+  languages: ['EN'],
+  competition: '',
+  estTime: 3,
+  authors: [
+    {
+      name: '',
+      url: '',
+    },
+  ],
+  technologies: [],
+  tags: [],
+};

@@ -177,7 +177,10 @@ export default function MetadataForm() {
       <CardContent className='grid gap-6'>
         <Tabs
           value={metadata.mode}
-          onValueChange={(value) => dispatchMetadata({ type: 'setMode', payload: value })}
+          onValueChange={(value) => {
+            dispatchMetadata({ type: 'setMode', payload: value });
+            setForceRefresh((prev) => prev + 1);
+          }}
         >
           <TabsList className='w-full'>
             <TabsTrigger value='project-task'>Project Task</TabsTrigger>

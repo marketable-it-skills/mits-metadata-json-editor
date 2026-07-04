@@ -1,4 +1,5 @@
 import { getDefaultMetadata, skillDomains } from '@/lib/data';
+import { metadataStorageKey } from '@/lib/storage';
 import type { Action, CollectionMetadata, Metadata, MetadataMode } from '@/types';
 
 // Regenerates the name field from short name + wsId + module name,
@@ -71,30 +72,29 @@ export function metadataReducer(state: Metadata | undefined, action: Action): Me
       return imported;
     }
 
-    // Restore the default template for the current mode, and clear the persisted metadata
-    case 'reset':
-      localStorage.removeItem('metadata');
-      return getDefaultMetadata(state?.mode ?? 'project-task');
+    // Restore the default template for the current mode, and clear its persisted entry
+    case 'reset': {
+      const mode = state?.mode ?? 'project-task';
+      localStorage.removeItem(metadataStorageKey(mode));
+      return getDefaultMetadata(mode);
+    }
   }
 
   // -- Form actions below all require an existing state to modify.
   if (!state) return undefined;
 
   switch (action.type) {
-    // Switches between project-task and tutorial editing modes
+    // Switches between project-task and tutorial editing modes. Each mode is
+    // persisted separately, so this loads the target mode's saved metadata
+    // (or its default template) instead of carrying the current fields over.
+    // The outgoing state needs no explicit save here: every change is already
+    // persisted under its own entry by the provider's save effect.
     case 'setMode': {
       const mode = action.payload as MetadataMode;
       if (mode === state.mode) return state;
 
-      const next: Metadata = { ...state, mode };
-      if (mode === 'project-task') {
-        // Regenerate name from the project-task fields; tutorial free-text names
-        // are left untouched when switching back into tutorial mode.
-        next.name = generateName(next);
-      } else if (!next.moduleNames) {
-        next.moduleNames = {};
-      }
-      return next;
+      const saved = localStorage.getItem(metadataStorageKey(mode));
+      return saved ? (JSON.parse(saved) as Metadata) : getDefaultMetadata(mode);
     }
 
     // Sets the value of a simple field

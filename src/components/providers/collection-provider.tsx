@@ -1,5 +1,6 @@
 import type { CollectionContextType, CollectionMetadata } from '@/types';
 import { createContext, useEffect, useState, type ReactNode } from 'react';
+import Loading from '../loading';
 
 export const CollectionContext = createContext<CollectionContextType>({ collection: [] });
 
@@ -16,7 +17,7 @@ const CollectionProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   if (collection === undefined) {
-    return 'Loading...';
+    return <Loading />;
   }
 
   return <CollectionContext.Provider value={{ collection }}>{children}</CollectionContext.Provider>;

@@ -1,5 +1,6 @@
 import type { TechTagContextType } from '@/types';
 import { createContext, useEffect, useState, type ReactNode } from 'react';
+import Loading from '../loading';
 
 export const TechTagContext = createContext<TechTagContextType>({
   tags: [],
@@ -35,7 +36,7 @@ const TechTagProvider = ({ children }: { children: ReactNode }) => {
   }, [technologies]);
 
   if (tags === undefined || technologies === undefined) {
-    return 'Loading...';
+    return <Loading />;
   }
 
   return (

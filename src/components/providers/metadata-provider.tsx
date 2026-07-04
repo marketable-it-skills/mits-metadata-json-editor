@@ -2,6 +2,7 @@ import { metadataReducer } from '@/reducers/metadata-reducer';
 import { defaultMetadata } from '@/lib/data';
 import type { MetadataContextType } from '@/types';
 import { createContext, useContext, useEffect, useReducer, type ReactNode } from 'react';
+import Loading from '../loading';
 
 const MetadataContext = createContext<MetadataContextType>({
   metadata: defaultMetadata,
@@ -37,7 +38,7 @@ const MetadataProvider = ({ children }: { children: ReactNode }) => {
   }, [metadata]);
 
   if (metadata === undefined) {
-    return 'Loading...';
+    return <Loading />;
   }
 
   return (

@@ -9,9 +9,10 @@ type AuthorsFieldProps = {
   authors: Author[];
   onChange: (authors: Author[]) => void;
   error?: string;
+  urlErrors?: (string | undefined)[];
 };
 
-export default function AuthorsField({ authors, onChange, error }: AuthorsFieldProps) {
+export default function AuthorsField({ authors, onChange, error, urlErrors }: AuthorsFieldProps) {
   const fieldPrefix = useId();
 
   return (
@@ -29,7 +30,7 @@ export default function AuthorsField({ authors, onChange, error }: AuthorsFieldP
       {authors.map((author, index) => (
         <div
           key={index}
-          className='grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] items-center gap-2'
+          className='grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] items-start gap-2'
         >
           <Input
             id={`${fieldPrefix}-name-${index}`}
@@ -45,21 +46,27 @@ export default function AuthorsField({ authors, onChange, error }: AuthorsFieldP
             }
             placeholder='Author name'
           />
-          <Input
-            id={`${fieldPrefix}-url-${index}`}
-            type='url'
-            value={author.url}
-            onChange={(event) =>
-              onChange(
-                authors.map((currentAuthor, currentIndex) =>
-                  currentIndex === index
-                    ? { ...currentAuthor, url: event.target.value }
-                    : currentAuthor,
-                ),
-              )
-            }
-            placeholder='https://github.com/username'
-          />
+          <div className='grid gap-1'>
+            <Input
+              id={`${fieldPrefix}-url-${index}`}
+              type='url'
+              value={author.url}
+              aria-invalid={!!urlErrors?.[index]}
+              onChange={(event) =>
+                onChange(
+                  authors.map((currentAuthor, currentIndex) =>
+                    currentIndex === index
+                      ? { ...currentAuthor, url: event.target.value }
+                      : currentAuthor,
+                  ),
+                )
+              }
+              placeholder='https://github.com/username'
+            />
+            {urlErrors?.[index] && (
+              <p className='text-destructive text-xs'>{urlErrors[index]}</p>
+            )}
+          </div>
           <Button
             type='button'
             variant='ghost'

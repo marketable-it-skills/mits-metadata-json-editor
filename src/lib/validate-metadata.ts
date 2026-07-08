@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const authorSchema = z.object({
   name: z.string(),
-  url: z.string(),
+  url: z.union([z.literal(''), z.url({ message: 'Enter a valid URL, e.g. https://github.com/author.' })]),
 });
 
 export const metadataSchema = z
@@ -11,7 +11,6 @@ export const metadataSchema = z
     name: z.string(),
     displayName: z.string(),
     description: z.string(),
-    url: z.string(),
     skillDomainIds: z.array(z.number()),
     languages: z.array(z.string()),
     competition: z.string(),
@@ -73,30 +72,6 @@ export const metadataSchema = z
       });
     }
 
-    if (!metadata.displayName.trim()) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ['displayName'],
-        message: 'Task topic is required.',
-      });
-    }
-
-    if (!metadata.description.trim()) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ['description'],
-        message: 'Description is required.',
-      });
-    }
-
-    if (!metadata.url.trim()) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ['url'],
-        message: 'URL is required.',
-      });
-    }
-
     if (metadata.authors.length === 0 || metadata.authors.every((author) => !author.name.trim())) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -114,7 +89,6 @@ export function validateImportShape(data: unknown): string | null {
   if (typeof record.name !== 'string') return 'Missing or invalid "name" field.';
   if (typeof record.displayName !== 'string') return 'Missing or invalid "displayName" field.';
   if (typeof record.description !== 'string') return 'Missing or invalid "description" field.';
-  if (typeof record.url !== 'string') return 'Missing or invalid "url" field.';
   if (!Array.isArray(record.skillDomainIds)) return 'Missing or invalid "skillDomainIds" field.';
   if (!Array.isArray(record.languages)) return 'Missing or invalid "languages" field.';
   if (!Array.isArray(record.authors)) return 'Missing or invalid "authors" field.';

@@ -60,9 +60,9 @@ export default function TagInputField({
   );
 
   return (
-    <div className='grid gap-1.5'>
+    <div className='grid gap-2'>
       <Label htmlFor={id}>{label}</Label>
-      <div className='border-input focus-within:border-ring focus-within:ring-ring/50 dark:bg-input/30 flex min-h-9 flex-wrap items-center gap-1.5 rounded-lg border px-1.5 py-1 transition-colors focus-within:ring-3'>
+      <div className='border-input focus-within:border-ring focus-within:ring-ring/50 dark:bg-input/30 flex min-h-10 flex-wrap items-center gap-1.5 rounded-lg border px-2 py-1.5 transition-colors focus-within:ring-3'>
         {values.map((value) =>
           isLocked(value) ? (
             <Badge
@@ -129,6 +129,7 @@ export default function TagInputField({
                 key={suggestion}
                 asChild
                 variant='outline'
+                className='h-6 px-2.5 py-1'
               >
                 <button
                   type='button'

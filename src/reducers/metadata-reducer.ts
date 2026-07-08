@@ -105,7 +105,6 @@ export function metadataReducer(state: Metadata | undefined, action: Action): Me
         case 'competition':
         case 'displayName':
         case 'description':
-        case 'url':
         case 'estTime':
           return { ...state, [field]: value };
         case 'skill': {

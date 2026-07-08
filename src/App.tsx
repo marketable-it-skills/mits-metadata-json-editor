@@ -11,10 +11,10 @@ export default function App() {
         <MetadataProvider>
           <div className='min-h-screen'>
             <Header />
-            <main className='mx-auto w-full max-w-4xl px-4 pt-28 pb-16'>
-              <div className='mb-8 text-center'>
+            <main className='mx-auto w-full max-w-4xl px-4 pt-28 pb-20 sm:px-6'>
+              <div className='mb-10 text-center sm:mb-12'>
                 <h1 className='text-3xl font-bold tracking-tight'>Metadata Editor</h1>
-                <p className='text-muted-foreground mt-2 text-sm'>
+                <p className='text-muted-foreground mx-auto mt-3 max-w-xl text-sm'>
                   Import, edit and export the metadata.json of a MITS project task — everything
                   stays in your browser.
                 </p>

@@ -4,7 +4,6 @@ export interface CollectionMetadata {
   name: string;
   displayName: string;
   description: string;
-  url: string;
   skillDomainIds: number[];
   languages: string[];
   competition: string;

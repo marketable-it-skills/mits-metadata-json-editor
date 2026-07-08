@@ -46,8 +46,8 @@ function FormSection({
   children: ReactNode;
 }) {
   return (
-    <section className='grid gap-4'>
-      <div className='grid gap-0.5'>
+    <section className='grid gap-5'>
+      <div className='grid gap-1'>
         <h2 className='text-sm font-semibold'>{title}</h2>
         {description && <p className='text-muted-foreground text-xs'>{description}</p>}
       </div>
@@ -72,7 +72,7 @@ function Field({
   children: ReactNode;
 }) {
   return (
-    <div className='grid gap-1.5'>
+    <div className='grid gap-2'>
       <Label htmlFor={htmlFor}>
         {label}
         {required && <span className='text-destructive'>*</span>}
@@ -171,10 +171,10 @@ export default function MetadataForm() {
 
   return (
     <Card
-      className='mx-auto w-full max-w-3xl'
+      className='mx-auto w-full max-w-3xl [--card-spacing:--spacing(6)] sm:[--card-spacing:--spacing(8)]'
       key={forceRefresh}
     >
-      <CardContent className='grid gap-6'>
+      <CardContent className='grid gap-8 sm:gap-10'>
         <Tabs
           value={metadata.mode}
           onValueChange={(value) => {
@@ -183,8 +183,18 @@ export default function MetadataForm() {
           }}
         >
           <TabsList className='w-full'>
-            <TabsTrigger value='project-task'>Project Task</TabsTrigger>
-            <TabsTrigger value='tutorial'>Tutorial</TabsTrigger>
+            <TabsTrigger
+              value='project-task'
+              className='py-4'
+            >
+              Project Task
+            </TabsTrigger>
+            <TabsTrigger
+              value='tutorial'
+              className='py-4'
+            >
+              Tutorial
+            </TabsTrigger>
           </TabsList>
         </Tabs>
 
@@ -217,7 +227,7 @@ export default function MetadataForm() {
                   placeholder='e.g. EuroSkills 2027 HU National Final'
                 />
               </Field>
-              <div className='grid gap-4 sm:grid-cols-2'>
+              <div className='grid gap-5 sm:grid-cols-2'>
                 <Field
                   label='Competition short name'
                   htmlFor='competition-short-name'
@@ -304,11 +314,13 @@ export default function MetadataForm() {
 
         <Separator />
 
-        <FormSection title='Task details'>
+        <FormSection
+          title='Task details'
+          description='Provide a short description and summary of the task. (optional)'
+        >
           <Field
             label='Task topic'
             htmlFor='task-topic'
-            required
             error={errors.displayName?.message}
           >
             <Input
@@ -327,7 +339,6 @@ export default function MetadataForm() {
           <Field
             label='Description'
             htmlFor='description'
-            required
             error={errors.description?.message}
           >
             <Textarea
@@ -344,27 +355,6 @@ export default function MetadataForm() {
               className='min-h-28'
             />
           </Field>
-          <Field
-            label='URL'
-            htmlFor='url'
-            required
-            error={errors.url?.message}
-            hint='Link to the task repository.'
-          >
-            <Input
-              id='url'
-              type='url'
-              {...register('url', {
-                onChange: (event) =>
-                  dispatchMetadata({
-                    type: 'set',
-                    payload: { field: 'url', value: event.target.value },
-                  }),
-              })}
-              aria-invalid={!!errors.url}
-              placeholder='https://github.com/organization/task'
-            />
-          </Field>
         </FormSection>
 
         <Separator />
@@ -378,6 +368,7 @@ export default function MetadataForm() {
                 <Field
                   label='Skill'
                   htmlFor='skill'
+                  hint='Select the skill domain that best fits the task.'
                   required
                 >
                   <Select
@@ -481,6 +472,11 @@ export default function MetadataForm() {
               <AuthorsField
                 authors={field.value}
                 error={errors.authors?.message}
+                urlErrors={
+                  Array.isArray(errors.authors)
+                    ? errors.authors.map((authorError) => authorError?.url?.message)
+                    : undefined
+                }
                 onChange={(nextAuthors) => {
                   field.onChange(nextAuthors);
                   dispatchMetadata({ type: 'setAuthors', payload: nextAuthors });
@@ -587,7 +583,7 @@ export default function MetadataForm() {
         )}
       </CardContent>
 
-      <CardFooter className='flex-col items-stretch gap-2'>
+      <CardFooter className='flex-col items-stretch gap-3'>
         <input
           ref={fileInputRef}
           type='file'
@@ -611,7 +607,7 @@ export default function MetadataForm() {
           </div>
         )}
 
-        <div className='grid gap-2 sm:grid-cols-2'>
+        <div className='grid gap-3 sm:grid-cols-2'>
           <Button
             type='button'
             size='lg'
@@ -632,7 +628,7 @@ export default function MetadataForm() {
             {copyStatus === 'copied' ? 'Copied!' : 'Copy to clipboard'}
           </Button>
         </div>
-        <div className='grid gap-2 sm:grid-cols-2'>
+        <div className='grid gap-3 sm:grid-cols-2'>
           <Button
             type='button'
             size='lg'

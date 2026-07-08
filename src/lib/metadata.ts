@@ -4,7 +4,6 @@ export interface ProjectTaskExport {
   name: string;
   displayName: string;
   description: string;
-  url: string;
   skillDomainIds: number[];
   languages: string[];
   competition: string;
@@ -18,7 +17,6 @@ export interface TutorialExport {
   name: string;
   displayName: string;
   description: string;
-  url: string;
   skillDomainIds: number[];
   languages: string[];
   authors: Author[];
@@ -37,7 +35,6 @@ export function toExportJson(metadata: Metadata): ProjectTaskExport | TutorialEx
     name,
     displayName,
     description,
-    url,
     skillDomainIds,
     languages,
     authors,
@@ -49,7 +46,7 @@ export function toExportJson(metadata: Metadata): ProjectTaskExport | TutorialEx
     mode,
   } = metadata;
 
-  const shared = { name, displayName, description, url, skillDomainIds, languages, authors, technologies, tags };
+  const shared = { name, displayName, description, skillDomainIds, languages, authors, technologies, tags };
 
   if (mode === 'tutorial') {
     return { ...shared, moduleNames: moduleNames ?? {} };

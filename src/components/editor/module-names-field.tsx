@@ -72,7 +72,7 @@ export default function ModuleNamesField({ moduleNames, onChange }: ModuleNamesF
           >
             <GripVerticalIcon className='size-4' />
           </button>
-          <span className='bg-muted text-muted-foreground flex size-8 shrink-0 items-center justify-center rounded-lg text-sm font-medium tabular-nums'>
+          <span className='bg-muted text-muted-foreground flex size-10 shrink-0 items-center justify-center rounded-lg text-sm font-medium tabular-nums'>
             {index + 1}
           </span>
           <Input
